@@ -1,0 +1,11 @@
+[build]
+  cmd = "go build -o ./bin/abundance ./cmd/main.go"
+  bin = "bin/abundance"
+  dir = "."
+  include_ext = ["go"]
+  exclude_dir = ["vendor"]
+  run_after_build = "chmod +x ./bin/abundance"
+
+[log]
+  level = "debug"
+
