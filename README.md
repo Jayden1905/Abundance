@@ -80,7 +80,7 @@ docker-compose down
 docker-compose up --build
 ```
 
-### **Rebuild After Changes**
+### **Access MySQL Inside the Container**
 
 ```bash
 docker exec -it mysql_db mysql -u root -p
