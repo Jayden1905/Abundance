@@ -8,6 +8,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
 
+	"github.com/jayden1905/abundance/cmd/pkg/database"
 	"github.com/jayden1905/abundance/config"
 	"github.com/jayden1905/abundance/service/auth"
 	"github.com/jayden1905/abundance/service/email"
@@ -44,6 +45,7 @@ func (h *Handler) RegisterRoutes(router fiber.Router) {
 func (h *Handler) handleRegister(c *fiber.Ctx) error {
 	// Parse JSON payload
 	var payload types.RegisterUserPayload
+
 	if err := c.BodyParser(&payload); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid request payload"})
 	}
@@ -70,10 +72,12 @@ func (h *Handler) handleRegister(c *fiber.Ctx) error {
 	}
 
 	// Create a new user with unverified status
-	err = h.store.CreateUser(c.Context(), &types.User{
-		Username:     payload.Username,
-		Email:        payload.Email,
-		PasswordHash: hashedPassword,
+	err = h.store.CreateUser(c.Context(), &database.User{
+		Username:       payload.Username,
+		Email:          payload.Email,
+		PasswordHash:   hashedPassword,
+		RoleID:         utils.ConvertRoleStringToRoleID(payload.Role),
+		SubscriptionID: utils.ConvertSubscriptionStringToSubscriptionID(payload.Subscription),
 	})
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})

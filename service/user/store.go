@@ -8,7 +8,6 @@ import (
 
 	"github.com/jayden1905/abundance/cmd/pkg/database"
 	"github.com/jayden1905/abundance/types"
-	"github.com/jayden1905/abundance/utils"
 )
 
 type Store struct {
@@ -107,13 +106,13 @@ func (s *Store) GetUserRoleByID(id int32) (string, error) {
 }
 
 // CreateUser creates a new user in the database
-func (s *Store) CreateUser(ctx context.Context, user *types.User) error {
+func (s *Store) CreateUser(ctx context.Context, user *database.User) error {
 	err := s.db.CreateUser(ctx, database.CreateUserParams{
 		Username:       user.Username,
 		Email:          user.Email,
 		PasswordHash:   user.PasswordHash,
-		RoleID:         utils.ConvertRoleStringToRoleID(user.Role),
-		SubscriptionID: utils.ConvertSubscriptionStringToSubscriptionID(user.Subscription),
+		RoleID:         user.RoleID,
+		SubscriptionID: user.SubscriptionID,
 	})
 	if err != nil {
 		return err
