@@ -144,7 +144,8 @@ SELECT users.user_id,
     subscriptions.subscription_type AS 'subscription type',
     users.is_verified,
     users.created_at,
-    users.updated_at
+    users.updated_at,
+    users.password_hash
 FROM users users
     JOIN roles roles USING(role_id)
     JOIN subscriptions subscriptions USING (subscription_id)
@@ -160,6 +161,7 @@ type GetUserByEmailRow struct {
 	IsVerified       bool
 	CreatedAt        time.Time
 	UpdatedAt        time.Time
+	PasswordHash     string
 }
 
 func (q *Queries) GetUserByEmail(ctx context.Context, email string) (GetUserByEmailRow, error) {
@@ -174,6 +176,7 @@ func (q *Queries) GetUserByEmail(ctx context.Context, email string) (GetUserByEm
 		&i.IsVerified,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.PasswordHash,
 	)
 	return i, err
 }

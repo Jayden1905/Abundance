@@ -51,7 +51,8 @@ SELECT users.user_id,
     subscriptions.subscription_type AS 'subscription type',
     users.is_verified,
     users.created_at,
-    users.updated_at
+    users.updated_at,
+    users.password_hash
 FROM users users
     JOIN roles roles USING(role_id)
     JOIN subscriptions subscriptions USING (subscription_id)
