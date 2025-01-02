@@ -186,6 +186,7 @@ SELECT users.user_id,
     roles.name AS 'role',
     users.username,
     users.email,
+    users.password_hash,
     users.is_verified,
     subscriptions.subscription_type AS 'subscription type',
     users.created_at,
@@ -201,6 +202,7 @@ type GetUserByIDRow struct {
 	Role             RolesName
 	Username         string
 	Email            string
+	PasswordHash     string
 	IsVerified       bool
 	SubscriptionType SubscriptionsSubscriptionType
 	CreatedAt        time.Time
@@ -215,6 +217,7 @@ func (q *Queries) GetUserByID(ctx context.Context, userID int32) (GetUserByIDRow
 		&i.Role,
 		&i.Username,
 		&i.Email,
+		&i.PasswordHash,
 		&i.IsVerified,
 		&i.SubscriptionType,
 		&i.CreatedAt,

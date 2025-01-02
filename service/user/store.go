@@ -88,6 +88,7 @@ func (s *Store) GetUserByID(id int32) (*types.User, error) {
 		Role:         string(user.Role),
 		Subscription: string(user.SubscriptionType),
 		Email:        user.Email,
+		PasswordHash: user.PasswordHash,
 		IsVerified:   user.IsVerified,
 		CreatedAt:    user.CreatedAt,
 		UpdatedAt:    user.UpdatedAt,
