@@ -212,9 +212,9 @@ func (h *Handler) handleLogin(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Email or password is incorrect"})
 	}
 
-	if !u.IsVerified {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Please verify your email"})
-	}
+	// if !u.IsVerified {
+	// 	return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Please verify your email"})
+	// }
 
 	secret := []byte(config.Envs.JWTSecret)
 	token, err := auth.CreateJWT(secret, int(u.ID))
