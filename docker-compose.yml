@@ -8,9 +8,6 @@ services:
       - '8080:8080'
     env_file:
       - .env
-    volumes:
-      - .:/app
-    command: ['bash', '-c', 'air -c .air.toml']
 
   db:
     image: mysql:8.0
