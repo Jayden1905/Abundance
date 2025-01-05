@@ -30,11 +30,12 @@ func (s *apiConfig) Run() error {
 	app := fiber.New()
 
 	app.Use(cors.New(cors.Config{
-		AllowOrigins:     fmt.Sprintf("http://localhost:5173, %s", config.Envs.PublicHost),
+		AllowOrigins:     "*",
 		AllowMethods:     "GET,POST,PUT,DELETE,OPTIONS",
 		AllowHeaders:     "Origin, Content-Type, Authorization, Accept, X-Requested-With",
 		AllowCredentials: true,
 	}))
+	log.Println(config.Envs.PublicHost)
 	// Define the apiV1 group
 	apiV1 := app.Group("/api/v1")
 
