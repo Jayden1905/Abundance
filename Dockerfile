@@ -1,22 +1,3 @@
-# FROM golang:1.23.1-alpine
-#
-# WORKDIR /app
-#
-# RUN go install github.com/pressly/goose/v3/cmd/goose@latest
-#
-# RUN apk add --no-cache bash curl git
-#
-# COPY go.mod go.sum ./
-# RUN go mod download
-#
-# COPY . .
-#
-# RUN go build -o server ./cmd/main.go
-#
-# EXPOSE 8080
-#
-# CMD ["bash", "-c", "goose -dir ./cmd/sql/migrations mysql \"${DB_USER}:${DB_PASSWD}@tcp(${DB_HOST}:${DB_PORT})/${DB_NAME}\" up && ./server"]
-
 FROM golang:1.23.1-alpine AS base
 
 WORKDIR /app
