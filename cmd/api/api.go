@@ -30,9 +30,9 @@ func (s *apiConfig) Run() error {
 	app := fiber.New()
 
 	app.Use(cors.New(cors.Config{
-		AllowOrigins:     "*",
+		AllowOrigins:     fmt.Sprintf("http://localhost:5173, %s", config.Envs.PublicHost),
 		AllowMethods:     "GET,POST,PUT,DELETE,OPTIONS",
-		AllowHeaders:     "Origin, Content-Type, Authorization, Accept, X-Requested-With",
+		AllowHeaders:     "Origin,Content-Type,Accept,Content-Length,Accept-Language,Accept-Encoding,Connection,Access-Control-Allow-Origin",
 		AllowCredentials: true,
 	}))
 	log.Println(config.Envs.PublicHost)
