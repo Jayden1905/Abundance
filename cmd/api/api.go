@@ -2,7 +2,6 @@ package api
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
@@ -30,13 +29,14 @@ func (s *apiConfig) Run() error {
 	app := fiber.New()
 
 	app.Use(cors.New(cors.Config{
-		AllowOrigins:     fmt.Sprintf("http://localhost:5173, %s", config.Envs.PublicHost),
+		AllowOrigins:     config.Envs.PublicHost,
 		AllowMethods:     "GET,POST,PUT,DELETE,OPTIONS",
-		AllowHeaders:     "Origin,Content-Type,Accept,Content-Length,Accept-Language,Accept-Encoding,Connection,Access-Control-Allow-Origin",
+		AllowHeaders:     "Origin,Content-Type,Accept,Content-Length,Accept-Language,Accept-Encoding,Connection,Access-Control-Allow-Origin,Authorization",
 		AllowCredentials: true,
 	}))
 
-	log.Println(config.Envs.PublicHost)
+	log.Println(config.Envs.PublicHost, config.Envs.ISProduction)
+
 	// Define the apiV1 group
 	apiV1 := app.Group("/api/v1")
 
