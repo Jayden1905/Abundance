@@ -36,6 +36,7 @@ func (s *apiConfig) Run() error {
 	}))
 
 	log.Println(config.Envs.PublicHost, config.Envs.ISProduction)
+
 	// Define the apiV1 group
 	apiV1 := app.Group("/api/v1")
 

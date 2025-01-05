@@ -13,8 +13,6 @@ RUN go mod download
 # Copy the rest of the application code
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /app/bin/abundance ./cmd/main.go
-
 RUN apk add --no-cache bash curl
 
 # Expose the application port
