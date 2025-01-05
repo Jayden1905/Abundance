@@ -32,7 +32,7 @@ func (s *apiConfig) Run() error {
 	app.Use(cors.New(cors.Config{
 		AllowOrigins:     fmt.Sprint("http://localhost:5173", config.Envs.PublicHost),
 		AllowMethods:     "GET,POST,PUT,DELETE,OPTIONS",
-		AllowHeaders:     "Origin, Content-Type, Authorization, Accept",
+		AllowHeaders:     "Origin, Content-Type, Authorization, Accept, X-Requested-With",
 		AllowCredentials: true,
 	}))
 	// Define the apiV1 group
