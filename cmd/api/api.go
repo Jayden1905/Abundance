@@ -35,6 +35,7 @@ func (s *apiConfig) Run() error {
 		AllowHeaders:     "Origin,Content-Type,Accept,Content-Length,Accept-Language,Accept-Encoding,Connection,Access-Control-Allow-Origin",
 		AllowCredentials: true,
 	}))
+
 	log.Println(config.Envs.PublicHost)
 	// Define the apiV1 group
 	apiV1 := app.Group("/api/v1")
