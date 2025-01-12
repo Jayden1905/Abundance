@@ -212,9 +212,9 @@ func (h *Handler) handleLogin(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Email or password is incorrect"})
 	}
 
-	// if !u.IsVerified {
-	// 	return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Please verify your email"})
-	// }
+	if !u.IsVerified {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Please verify your email"})
+	}
 
 	secret := []byte(config.Envs.JWTSecret)
 	token, err := auth.CreateJWT(secret, int(u.ID))
@@ -479,4 +479,49 @@ func (h *Handler) handleIsAuthenticated(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"user": user,
 	})
+}
+
+// Handler for updating user password
+func (h *Handler) handleUpdateUserPassword(c *fiber.Ctx) error {
+	userID := auth.GetUserIDFromContext(c)
+
+	// Parse JSON payload
+	var payload types.UpdateUserPasswordPayload
+	if err := c.BodyParser(&payload); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid request payload"})
+	}
+
+	// Validate the payload
+	invalidFields, err := utils.ValidatePayload(payload)
+	if err != nil {
+		// Return the invalid fields if validation fails
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error":          "Invalid payload",
+			"invalid_fields": invalidFields,
+		})
+	}
+
+	// Check if the user exists
+	u, err := h.store.GetUserByID(userID)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "User not found"})
+	}
+
+	// Check if the old password is correct
+	if !auth.ComparePasswords(u.PasswordHash, []byte(payload.OldPassword)) {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Old password is incorrect"})
+	}
+
+	// Hash the new password
+	hashedPassword, err := auth.HashPassword(payload.NewPassword)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Error hashing password"})
+	}
+
+	// Update the user password
+	if err := h.store.UpdateUserPassword(c.Context(), userID, hashedPassword); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": fmt.Sprintf("Error updating user password: %v", err)})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"message": "Password updated successfully"})
 }

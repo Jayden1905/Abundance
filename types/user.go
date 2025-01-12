@@ -30,6 +30,7 @@ type UserStore interface {
 	UpdateUserToNormalUser(ctx context.Context, id int32) error
 	UpdateUserVerification(ctx context.Context, id int32) error
 	DeleteUserByID(ctx context.Context, id int32) error
+	UpdateUserPassword(ctx context.Context, id int32, passwordHash string) error
 }
 
 type RegisterUserPayload struct {
@@ -52,4 +53,9 @@ type UpdateUserInformationPayload struct {
 
 type ResendVerificationEmailPayload struct {
 	Email string `json:"email" validate:"required,email"`
+}
+
+type UpdateUserPasswordPayload struct {
+	OldPassword string `json:"old_password" validate:"required,min=3,max=20"`
+	NewPassword string `json:"new_password" validate:"required,min=3,max=20"`
 }

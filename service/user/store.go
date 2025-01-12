@@ -179,3 +179,16 @@ func (s *Store) DeleteUserByID(ctx context.Context, id int32) error {
 
 	return nil
 }
+
+// UpdateUserPassword updates the user password in the database
+func (s *Store) UpdateUserPassword(ctx context.Context, id int32, passwordHash string) error {
+	err := s.db.UpdateUserPassword(ctx, database.UpdateUserPasswordParams{
+		PasswordHash: passwordHash,
+		UserID:       id,
+	})
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
